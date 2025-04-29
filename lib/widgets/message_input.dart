@@ -9,7 +9,7 @@ class MessageInput extends StatelessWidget {
 
   MessageInput({super.key});
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 30.0, left: 22.0, right: 22.0), // Adjust the top padding to move it lower
