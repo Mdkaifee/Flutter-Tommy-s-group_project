@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart'; // Import flutter_bloc
 import 'blocs/presentation/message_bloc.dart'; // Import the bloc

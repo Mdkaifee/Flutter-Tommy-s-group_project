@@ -7,6 +7,10 @@ import '../../blocs/presentation/message_state.dart';
 import '../../widgets/chat_bubble.dart';
 import '../../widgets/message_input.dart';
 import '../../data/models/message_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Import for SVG
+import '../../widgets/chat_bubble.dart';
+import '../../widgets/message_input.dart';
 
 class TicketHeader extends StatelessWidget implements PreferredSizeWidget {
   const TicketHeader({super.key});
@@ -15,25 +19,28 @@ class TicketHeader extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(64);
 
   static const _bodyYellow = Color(0xFFFDC15A);
-  static const _tealBorder = Color(0xFFA7E0C5);
+  static const _tealBorder = Color(0xFFA7E0C5); // Teal color for the border radius
+  static const _greenBorder = Color(0xFF246153); // Green color for the border radius
 
   @override
   Widget build(BuildContext context) {
+    // Get the screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return SafeArea(
       bottom: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8), // No horizontal padding to shift left
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start, // Align to the left side
           children: [
             // Combine the image and back button without extra gap
             Row(
-              mainAxisSize: MainAxisSize.min, // Ensures no extra space is added
+              mainAxisSize: MainAxisSize.min,
               children: [
                 // Image (u.png) directly next to the back button
                 Image.asset(
-                  'assets/abc.png', // Image asset path
-                  // width: 10, // Adjust the size of the image as needed
+                  'assets/u.png', // Image asset path
                   height: 50, // Adjust the size of the image as needed
                 ),
                 // Ticket back button directly after the image with no space
@@ -46,7 +53,7 @@ class TicketHeader extends StatelessWidget implements PreferredSizeWidget {
                 height: 56,
                 decoration: BoxDecoration(
                   color: _bodyYellow,
-                  border: Border.all(color: _tealBorder, width: 2),
+                  border: Border.all(color: _tealBorder, width: 2), // Teal color border
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10),
@@ -62,21 +69,33 @@ class TicketHeader extends StatelessWidget implements PreferredSizeWidget {
                       backgroundImage: AssetImage('assets/profile.png'),
                     ),
                     const SizedBox(width: 12),
-                    const Expanded(
-                      child: Text(
-                        "Tommy’s Group",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Fraunces',
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                    // Use LayoutBuilder to adjust text size based on screen width
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        double availableWidth = constraints.maxWidth;
+                        double fontSize = availableWidth > 350 ? 16.0 : 14.0; // Adjust font size based on width
+                        return Flexible(
+                          child: Text(
+                            "Tommy’s Group",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: fontSize,
+                              fontFamily: 'Fraunces',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    SvgPicture.asset(
-                      'assets/threedot.svg',
-                      width: 7,
-                      height: 7,
+                    // Add space between the text and the three dots
+                    const SizedBox(width: 12), // Adjust the width here to increase the space
+                    // Add the three dot icon
+                    Expanded(
+                      child: SvgPicture.asset(
+                        'assets/threedot.svg',
+                        width: 7, // Height remains the same
+                        height: 7, // Height remains the same
+                      ),
                     ),
                     const SizedBox(width: 26),
                   ],
@@ -111,14 +130,17 @@ class TicketBackButton extends StatelessWidget {
         ),
         child: ClipPath(
           child: SizedBox(
-            width: 60, // Adjust size if needed
-            height: 49,
+            width: 49.5, // Adjust size if needed
+            height: 48,
             child: Row(
               children: [
                 // Back icon
                 Expanded(
-                  child: Center(
-                    child: Icon(Icons.chevron_left, size: 30, color: _arrowTeal),
+                  child: SvgPicture.asset(
+                    'assets/backarrow.svg',  // Path to your SVG file
+                    width: 24,  // Set the width to 71.5px
+                    height: 24,   // Set the height to 48px
+                    color: _arrowTeal,
                   ),
                 ),
               ],
@@ -129,6 +151,7 @@ class TicketBackButton extends StatelessWidget {
     );
   }
 }
+
 
 class _StubPainter extends CustomPainter {
   const _StubPainter({required this.fill, required this.stroke});
@@ -191,62 +214,62 @@ class ChatScreen extends StatelessWidget {
       MessageModel(
         content: "Hi how are you?",
         sender: "Lousiana",
-        timestamp: DateTime.now().subtract(Duration(minutes: 10)),
+         time: "12:54",
         isSender: false,
       ),
       MessageModel(
         content: "@Tommy Feeling ok?",
         sender: "Lousiana",
-        timestamp: DateTime.now().subtract(Duration(minutes: 8)),
+        time: "12:55",
         isSender: false,
       ),
       MessageModel(
         content: "Yes, I'm good. thanks for askings.Didn't do much, feeling bit sick after that meal.So just exhausted.watching netflux,😢",
         sender: "Tommy",
-        timestamp: DateTime.now().subtract(Duration(minutes: 6)),
+        time: "13:20",
         isSender: false,
       ),
       MessageModel(
         content: "Yes Im well.Had a long day. went hiking with the some people.it was extremely hot couldn't be b...",
         sender: "Tommy",
-        timestamp: DateTime.now().subtract(Duration(minutes: 6)),
+        time: "12:57",
         isSender: true,
       ),
       MessageModel(
         content: "Yes, I'm good. thanks for askings.Didn't do much, feeling bit sick after that meal.So just exhausted.watching netflux", 
         sender: "Cristofer",
-        timestamp: DateTime.now().subtract(Duration(minutes: 4)),
+         time: "13:20",
         isSender: false,
       ),
       MessageModel(
         content: "Hi how are you?",
         sender: "Lousiana",
-        timestamp: DateTime.now().subtract(Duration(minutes: 10)),
+        time: "12:55",
         isSender: false,
       ),
       
       MessageModel(
         content: "Yes, I'm good. thanks for askings.Didn't do much, feeling bit sick after that meal.So just exhausted.watching netflux",
         sender: "Tommy",
-        timestamp: DateTime.now().subtract(Duration(minutes: 6)),
+        time: "13:20",
         isSender: false,
       ),
       MessageModel(
         content: "Yes, I'm good. thanks for askings.Didn't do much, feeling bit sick after that meal.So just exhausted.watching netflux",
         sender: "Cristofer",
-        timestamp: DateTime.now().subtract(Duration(minutes: 4)),
+        time: "13:20",
         isSender: false,
       ),
       MessageModel(
         content: "Yes, I'm well. Had a long day. went hiking with the some people. was extremely hot couldn't be b...",
         sender: "Tommy",
-        timestamp: DateTime.now().subtract(Duration(minutes: 6)),
+         time: "12:57",
         isSender: true,
       ),
       MessageModel(
         content: "Hi how are you?",
         sender: "Lousiana",
-        timestamp: DateTime.now().subtract(Duration(minutes: 10)),
+        time: "12:55",
         isSender: false,
       ),
     ];
@@ -282,51 +305,76 @@ class ChatScreen extends StatelessWidget {
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   itemCount: messages.length + 2,
-                  itemBuilder: (_, i) {
-                    if (i == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Center(
-                          child: Text(
-                            "10 July 2025",
-                            style: TextStyle(
-                              color: Color(0xFF0C201D),
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'Fraunces',
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
+        itemBuilder: (_, i) {
+if (i == 0) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    child: Center(
+      child: Container(
+        width: 343, // Set width to 343px
+        height: 20, // Set height to 20px
+        alignment: Alignment.center,
+        child: Text(
+          "10 July 2025",
+          style: TextStyle(
+            color: Color(0xFF0C201D), // Dark greenish color for the text
+            fontWeight: FontWeight.w400,
+            fontFamily: 'Fraunces', // Font Family (make sure it's added in pubspec.yaml)
+            fontSize: 12, // Font size
+            shadows: [
+              Shadow(
+                blurRadius: 1.0,
+             color: Color(0xFF72D6C6), // A light grey shadow for the glow effect
+                offset: Offset(1.0, 1.0),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
-                    // Insert date text after every 5th message
-                    if (i == 7) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Center(
-                          child: Text(
-                            "11 July 2025",
-                            style: TextStyle(
-                              color: Color(0xFF0C201D),
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'Fraunces',
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
+// Insert date text after every 5th message
+if (i == 7) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    child: Center(
+      child: Container(
+        // width: 343, // Set width to 343px
+        // height: 13, // Set height to 13px
+        alignment: Alignment.center,
+        child: Text(
+          "11 July 2025",
+          style: TextStyle(
+            color: Color(0xFF0C201D), // Dark greenish color for the text
+            fontWeight: FontWeight.w400,
+            fontFamily: 'Fraunces', // Font Family (make sure it's added in pubspec.yaml)
+            fontSize: 12, // Font size
+            shadows: [
+              Shadow(
+                blurRadius: 1.0,
+                 color: Color(0xFF72D6C6), // A light grey shadow for the glow effect
+                offset: Offset(1.0, 1.0),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
-                    final messageIndex = i - (i > 0 && i < 7 ? 1 : 2);
-                    final m = messages[messageIndex];
-                    return ChatBubble(
-                      message: m.content,
-                      sender: m.sender,
-                      timestamp: m.timestamp,
-                      isSender: m.isSender,
-                    );
-                  },
+  final messageIndex = i - (i > 0 && i < 7 ? 1 : 2);
+  final m = messages[messageIndex];
+  return ChatBubble(
+    message: m.content,
+    sender: m.sender,
+    time: m.formattedTime,  // Use the formatted time here
+    isSender: m.isSender,
+  );
+}
+
                 ),
               ),
               MessageInput(),

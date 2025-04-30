@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/presentation/message_bloc.dart';
 import '../blocs/presentation/message_event.dart';
 
-
 class MessageInput extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
 
@@ -50,7 +49,12 @@ class MessageInput extends StatelessWidget {
                         controller: _controller,
                         maxLines: null,  // Allow multiple lines
                         keyboardType: TextInputType.multiline, // Allow multiline input
-                        style: const TextStyle(color: Color(0xFF0C201D), fontSize: 12, fontFamily: 'Fraunces',), // Text color after typing (#0C201D)
+                        style: const TextStyle(
+                          color: Color(0xFF0C201D),  // Text color after typing (#0C201D)
+                          fontSize: 14,  // Font size
+                          fontFamily: 'Fraunces',  // Font family
+                          fontWeight: FontWeight.bold,  // Make text bold
+                        ),
                         decoration: const InputDecoration(
                           hintText: 'Type a message...',
                           border: InputBorder.none,  // Remove the default border
@@ -65,7 +69,7 @@ class MessageInput extends StatelessWidget {
                     child: Image.asset(
                       'assets/send.png',
                       width: 28,
-                      height: 28,
+                      height: 32,
                     ),
                   ),
                   // Column of Camera and Send icons, aligned to the right
@@ -77,8 +81,8 @@ class MessageInput extends StatelessWidget {
                         padding: const EdgeInsets.all(12.0),
                         child: Image.asset(
                           'assets/camera.png',
-                          width: 20,
-                          height: 20,
+                          width: 26,
+                          height: 26,
                         ),
                       ),
                       // Send button (Middle icon)
@@ -86,8 +90,8 @@ class MessageInput extends StatelessWidget {
                         padding: const EdgeInsets.all(2.0),
                         child: Image.asset(
                           'assets/flag.png',
-                          width: 24,
-                          height: 24,
+                          width: 18.02,
+                          height: 28,
                         ),
                       ),
                     ],

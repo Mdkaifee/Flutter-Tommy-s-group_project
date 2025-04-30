@@ -4,34 +4,46 @@ import 'package:intl/intl.dart'; // Import this package
 class ChatBubble extends StatelessWidget {
   final String message;
   final String sender;
-  final DateTime timestamp;
-  final bool isSender; // True if it's from the user, false for others
+  final String time;  // Static time
+  final bool isSender;
 
   const ChatBubble({
     Key? key,
     required this.message,
     required this.sender,
-    required this.timestamp,
+    required this.time,  // Static time
     required this.isSender,
   }) : super(key: key);
 
+  // Define the color for each sender
+  Color senderColor(String sender) {
+    switch (sender.toLowerCase()) {
+      case 'lousiana':
+        return const Color(0xFF2A9D8F); // Louisiana color
+      case 'tommy':
+        return const Color(0xFF1D4B45); // Tommy color
+      case 'cristofer':
+        return const Color(0xFFF4392A); // Cristofer color
+      default:
+        return Colors.black; // Default text color
+    }
+  }
+
+  // Method to explicitly format the time as HH:mm
+  String _formatTime(String time) {
+    final timeParts = time.split(":");
+    if (timeParts.length == 2) {
+      final hour = timeParts[0].padLeft(2, '0');
+      final minute = timeParts[1].padLeft(2, '0');
+      return '$hour:$minute';  // Return formatted time
+    }
+    return time;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final timeString = '${timestamp.hour}:${timestamp.minute}'; // Formatting time
-
-    // Define the color for each sender
-    Color senderColor(String sender) {
-      switch (sender.toLowerCase()) {
-        case 'lousiana':
-          return const Color(0xFF2A9D8F); // Louisiana color
-        case 'tommy':
-          return const Color(0xFF1D4B45); // Tommy color
-        case 'cristofer':
-          return const Color(0xFFF4392A); // Cristofer color
-        default:
-          return Colors.black; // Default text color
-      }
-    }
+    // Format time before displaying
+    String formattedTime = _formatTime(time);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
@@ -39,9 +51,10 @@ class ChatBubble extends StatelessWidget {
         alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
         child: FractionallySizedBox(
           alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
-          widthFactor: 0.75,  // Set the chat bubble width to 75% of the screen width
+          widthFactor: isSender ? 0.78 : 0.72,   // Set the chat bubble width to 75% of the screen width
           child: Container(
-            padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0), // Removed bottom padding
+
             decoration: BoxDecoration(
               color: isSender
                   ? const Color(0xFFFCC85F) // Background color for sender (Kaifee)
@@ -80,25 +93,44 @@ class ChatBubble extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  // const SizedBox(height: 4),
                 ],
-                // Message content
-                Text(
-                  message,
-                  style: const TextStyle(
-                    fontFamily: 'Fraunces', // Apply Fraunces font
-                    color: Color(0xFF153531), // Content text color
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400, // Content text font weight
+                // Message content with more left padding for sender
+                Padding(
+                  padding: isSender
+                      ? const EdgeInsets.only(left: 16.0, top: 0.0) // Extra left and top padding for sender
+                      : const EdgeInsets.only(top: 0.0), // No extra padding for receiver, only top padding
+                  child: Text(
+                    message,
+                    style: const TextStyle(
+                      fontFamily: 'Fraunces', // Apply Fraunces font
+                      color: Color(0xFF153531), // Content text color
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400, // Content text font weight
+                    ),
                   ),
                 ),
-                const SizedBox(height: 4),
+                // const SizedBox(height: 4),
                 // Time alignment
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    timeString,
-                    style: const TextStyle(fontFamily: 'Fraunces', fontSize: 12, color: Colors.black54),
+                 Transform.translate(
+                  offset: isSender
+                      ? const Offset(0, -4)  // Shift the time upwards for sender
+                      : const Offset(0, -4),  // Shift the time upwards for receiver
+                  child: Align(
+                    alignment: isSender ? Alignment.centerRight : Alignment.centerRight,
+                    child: Padding(
+                      padding: isSender
+                          ? const EdgeInsets.only(left: 5.0, top: 10.0)  // Slight padding for sender
+                          : const EdgeInsets.only(right: 20.0, top: 10.0),  // Slight padding for receiver
+                      child: Text(
+                        formattedTime,
+                        style: const TextStyle(
+                          fontFamily: 'Fraunces',
+                          fontSize: 12,
+                          color: Color(0xFF4A6F6A),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
